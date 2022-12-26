@@ -26,8 +26,7 @@ def main(dir_to_scan, target_dir):
     index_file = "index-files.txt"
     if os.path.exists(index_file):
         with open(index_file, 'r') as f:
-            files_list = [line.strip() for line in f]
-        print(files_list)
+            files_list = [str(line.strip()) for line in f]
     else:
     # יצירת רשימת הקבצים הקיימים בעץ התיקיות
         files_list = []
@@ -37,13 +36,12 @@ def main(dir_to_scan, target_dir):
         # הכנסת הרשימה המוכנה לקובץ
         with open(index_file, 'w') as f:
             for item in files_list:
-                f.write(str(item) + '\n')
+                try: f.write(str(item) + '\n')
+                except: pass
     
     # הגדרת רשימת הקבצים בתיקיה
     list_dir = os.listdir(dir_to_scan)
-    
-
-    
+   
     # מעבר על רשימת הקבצים בתיקית המקור והפעלת פונקציית "scan_if_exist"    
     for file_to_scan in list_dir:
         answer = scan_if_exist(file_to_scan, files_list)
