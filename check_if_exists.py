@@ -23,23 +23,32 @@ def main(dir_to_scan, target_dir, index=None):
     פרמטר 2 = נתיב תיקית יעד
     פרמטר 3 = אופציונלי "True" או "False". ברירת המחדל היא "None"
     """
-    # קריאת האינדקס מתוך קובץ מוכן
-    index_file = "index-files.txt"
-    if os.path.exists(index_file):
+    # הגדרת משתנה עבור נתיב קובץ אינדקס מותאם לתיקית היעד
+    index_file = os.path.join(target_dir,"index-files.txt")
+    
+    # קריאה מתוך קובץ, אם ישנו ואם לא הוגדרה בנייה מחדש של האינדקס
+    if os.path.isfile(index_file) and not index:
         with open(index_file, 'r') as f:
             files_list = [str(line.strip()) for line in f]
+   
+    # יצירת רשימת הקבצים הקיימים בעץ התיקיות   
     else:
-    # יצירת רשימת הקבצים הקיימים בעץ התיקיות
         files_list = []
         for root, dirs, files in os.walk(target_dir):
             if files != []:
                 files_list += files
-        # הכנסת הרשימה המוכנה לקובץ
-        if index:
+
+        # הכנסת הרשימה לקובץ, אם לא הוגדר במפורש שלא לבנות אינדקס             
+        if index != False:
+            # ביטול הסתרת קובץ האינדקס לצורך כתיבה עליו
+            if os.path.isfile(index_file): os.system('attrib -s -h ' + index_file)
             with open(index_file, 'w') as f:
                 for item in files_list:
                     try: f.write(str(item) + '\n')
                     except: pass
+            # הסתרת קובץ האינדקס
+            os.system('attrib +s +h ' + index_file)
+                    
     
     # הגדרת רשימת הקבצים בתיקיה
     list_dir = os.listdir(dir_to_scan)
@@ -52,4 +61,4 @@ def main(dir_to_scan, target_dir, index=None):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2])
+    main(sys.argv[1], sys.argv[2], index=eval(sys.argv[3]))
