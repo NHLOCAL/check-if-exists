@@ -94,16 +94,21 @@ result_label = tk.Label(window, text="תוצאות:", font=("Arial", 12), bg="wh
 result_label.grid(row=4, column=1, pady=(20, 10), sticky=tk.W)
 
 result_text = tk.Text(window, width=40, height=10, font=("Arial", 10), bg="light yellow")
+result_text.tag_configure("right", justify=tk.RIGHT)
 result_text.grid(row=5, column=0, columnspan=2, padx=10, pady=(0, 20), sticky=tk.NSEW)
 
 scrollbar = tk.Scrollbar(result_text)
-scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+scrollbar.pack(side=tk.LEFT, fill=tk.Y)
 result_text.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=result_text.yview)
+
 
 # Configure grid weights to make the result text widget expandable
 window.grid_rowconfigure(5, weight=1)
 window.grid_columnconfigure(0, weight=1)
+
+result_text.tag_add("right", "1.0", tk.END)
+
 
 # Start the GUI event loop
 window.mainloop()
