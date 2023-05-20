@@ -36,7 +36,7 @@ def main(dir_to_scan, target_dir, index=None):
     for file_to_scan in list_dir:
         answer = scan_if_exist(file_to_scan, files_list)
         if answer:
-            result_text.insert(tk.END, f'"{file_to_scan}" קובץ קיים!\n')
+            result_text.insert(tk.END, f'"{file_to_scan}" קובץ קיים!\n', "right")  # Insert right-aligned text
 
 def browse_dir(label):
     dirname = filedialog.askdirectory()
@@ -55,39 +55,42 @@ window.geometry("400x400")
 window.configure(bg="white")
 
 # Create the labels, radio buttons, and result text widget
-dir_to_scan_label = tk.Label(window, text="תיקיית סריקה:", font=("Arial", 12), bg="white", justify=tk.RIGHT)
+dir_to_scan_label = tk.Label(window, text="תיקיית סריקה:", font=("Arial", 12), bg="white", justify=tk.RIGHT, width=20)
 dir_to_scan_label.grid(row=0, column=1, pady=10)
 
 dir_to_scan_button = tk.Button(window, text="בחירה", font=("Arial", 10), command=lambda: browse_dir(dir_to_scan_label))
 dir_to_scan_button.grid(row=0, column=0)
 
-target_dir_label = tk.Label(window, text="תיקיית יעד:", font=("Arial", 12), bg="white", justify=tk.RIGHT)
+target_dir_label = tk.Label(window, text="תיקיית יעד:", font=("Arial", 12), bg="white", justify=tk.RIGHT, width=20)
 target_dir_label.grid(row=1, column=1, pady=10)
 
 target_dir_button = tk.Button(window, text="בחירה", font=("Arial", 10), command=lambda: browse_dir(target_dir_label))
 target_dir_button.grid(row=1, column=0)
 
-index_label = tk.Label(window, text="אינדקס:", font=("Arial", 12), bg="white", justify=tk.RIGHT)
+index_label = tk.Label(window, text="אינדקס:", font=("Arial", 12), bg="white", justify=tk.RIGHT, width=20)
 index_label.grid(row=2, column=1, pady=10)
 
 index_var = tk.StringVar(value="ברירת מחדל")
 
-index_frame = tk.Frame(window, bg="white")
-index_frame.grid(row=2, column=0, columnspan=2)
+index_frame = ttk.Frame(window)
+index_frame.grid(row=2, column=0)
 
-index_yes_button = tk.Radiobutton(index_frame, text="כן", variable=index_var, value="True", font=("Arial", 10), justify=tk.RIGHT)
+index_yes_button = ttk.Radiobutton(index_frame, text="כן", variable=index_var, value="כן", style="TRadiobutton",
+                                  command=lambda: result_text.focus_set())
 index_yes_button.pack(side=tk.RIGHT, padx=5)
 
-index_no_button = tk.Radiobutton(index_frame, text="לא", variable=index_var, value="False", font=("Arial", 10), justify=tk.RIGHT)
+index_no_button = ttk.Radiobutton(index_frame, text="לא", variable=index_var, value="לא", style="TRadiobutton",
+                                 command=lambda: result_text.focus_set())
 index_no_button.pack(side=tk.RIGHT, padx=5)
 
-index_default_button = tk.Radiobutton(index_frame, text="ברירת מחדל", variable=index_var, value="ברירת מחדל", font=("Arial", 10), justify=tk.RIGHT)
+index_default_button = ttk.Radiobutton(index_frame, text="ברירת מחדל", variable=index_var, value="ברירת מחדל",
+                                      style="TRadiobutton", command=lambda: result_text.focus_set())
 index_default_button.pack(side=tk.RIGHT, padx=5)
 
 start_button = tk.Button(window, text="התחל סריקה", font=("Arial", 12), command=start_scan)
 start_button.grid(row=3, column=0, columnspan=2, pady=20)
 
-result_label = tk.Label(window, text="תוצאות:", font=("Arial", 12), bg="white", justify=tk.RIGHT)
+result_label = tk.Label(window, text="תוצאות:", font=("Arial", 12), bg="white", justify=tk.RIGHT, width=20)
 result_label.grid(row=4, column=1, pady=(20, 10), sticky=tk.W)
 
 result_text = tk.Text(window, width=40, height=10, font=("Arial", 10), bg="light yellow")
